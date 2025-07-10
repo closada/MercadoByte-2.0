@@ -1,0 +1,299 @@
+/* Localidad */
+CREATE TABLE IF NOT EXISTS LOCALIDAD (
+    ID_LOCALIDAD INTEGER PRIMARY KEY AUTOINCREMENT,
+    CODIGO TEXT NOT NULL,
+    NOMBRE TEXT NOT NULL
+);
+
+/* Rol */
+CREATE TABLE IF NOT EXISTS ROL (
+    ID_ROL INTEGER PRIMARY KEY AUTOINCREMENT,
+    CODIGO TEXT NOT NULL,
+    NOMBRE TEXT NOT NULL
+);
+
+/* USUARIO */
+CREATE TABLE IF NOT EXISTS USUARIO (
+    ID_USUARIO INTEGER PRIMARY KEY AUTOINCREMENT,
+    NOMBRE TEXT NOT NULL,
+    APELLIDO TEXT NOT NULL,
+    DNI TEXT NOT NULL,
+    EDAD INTEGER,
+    EMAIL TEXT NOT NULL,
+    PASSWORD TEXT NOT NULL,
+    DOMICILIO TEXT,
+    ID_LOCALIDAD INTEGER,
+    ID_ROL INTEGER NOT NULL,
+    TOKEN TEXT,
+    FOREIGN KEY (ID_LOCALIDAD) REFERENCES LOCALIDAD (ID_LOCALIDAD),
+    FOREIGN KEY (ID_ROL) REFERENCES ROL(ID_ROL)
+);
+
+
+CREATE TABLE IF NOT EXISTS MENU (
+    ID_MENU INTEGER PRIMARY KEY AUTOINCREMENT,
+    TITULO TEXT NOT NULL,
+	ACCION TEXT NOT NULL,
+    ID_ROL INTEGER NOT NULL,
+	
+	FOREIGN KEY (ID_ROL) REFERENCES ROL(ID_ROL)
+);
+
+/*Estado */
+CREATE TABLE IF NOT EXISTS ESTADO (
+    ID_ESTADO INTEGER PRIMARY KEY AUTOINCREMENT,
+    DESCRIPCION TEXT NOT NULL
+);
+
+
+
+/* Categoria */
+CREATE TABLE IF NOT EXISTS CATEGORIA (
+    ID_CATEGORIA INTEGER PRIMARY KEY AUTOINCREMENT,
+    NOMBRE_CATEGORIA TEXT NOT NULL
+);
+
+/* Producto */
+CREATE TABLE IF NOT EXISTS PRODUCTO (
+    ID_PRODUCTO INTEGER PRIMARY KEY AUTOINCREMENT,
+    NOMBRE TEXT NOT NULL,
+    EAN TEXT NOT  NULL,
+    ID_CATEGORIA INTEGER NOT NULL,
+    
+    FOREIGN KEY (ID_CATEGORIA) REFERENCES CATEGORIA (ID_CATEGORIA)
+    
+);
+
+
+
+/* Publicacion */
+CREATE TABLE IF NOT EXISTS PUBLICACION (
+    ID_PUBLICACION INTEGER PRIMARY KEY AUTOINCREMENT,
+	ID_PRODUCTO INTEGER NOT NULL,
+	ID_VENDEDOR INTEGER NOT NULL,
+	BREVE_DESCRIPCION TEXT NULL,
+	STOCK INTEGER NOT NULL,
+	COSTO DOUBLE NOT NULL,
+          RUTA_IMAGEN TEXT NULL,
+          ACTIVA INTEGER NOT NULL,
+	
+	FOREIGN KEY (ID_VENDEDOR) REFERENCES USUARIO (ID_USUARIO),
+	FOREIGN KEY (ID_PRODUCTO) REFERENCES PRODUCTO (ID_PRODUCTO)
+);
+
+
+
+/* Venta */
+CREATE TABLE IF NOT EXISTS VENTA (
+    ID_VENTA INTEGER PRIMARY KEY AUTOINCREMENT,
+	NRO_VENTA TEXT NOT NULL,
+    FECHA_PEDIDO TEXT NOT NULL,
+    ID_CLIENTE INTEGER NOT NULL,
+	ID_PUBLICACION INTEGER NOT NULL,
+	CANTIDAD INTEGER NOT NULL,
+	COSTO DOUBLE NOT NULL,
+	ID_ESTADO INTEGER NOT NULL,
+    FECHA_ENTREGA TEXT,
+	
+    FOREIGN KEY (ID_CLIENTE) REFERENCES USUARIO (ID_USUARIO),
+	FOREIGN KEY (ID_PUBLICACION) REFERENCES PUBLICACION (ID_PUBLICACION),
+	FOREIGN KEY (ID_ESTADO) REFERENCES ESTADO (ID_ESTADO)
+);
+
+/* OPINION */
+CREATE TABLE IF NOT EXISTS OPINION (
+    ID_OPINION INTEGER PRIMARY KEY AUTOINCREMENT,
+    ID_VENTA INTEGER NOT NULL,
+    PUNTAJE INTEGER NOT NULL,
+    COMENTARIO TEXT NULL,
+    
+    FOREIGN KEY (ID_VENTA) REFERENCES VENTA(ID_VENTA)
+);
+
+/* PREGUNTA-RESPUESTA */
+CREATE TABLE IF NOT EXISTS PREGUNTA_RESPUESTA (
+        ID_PREGUNTA_RESPUESTA INTEGER PRIMARY KEY AUTOINCREMENT,
+        ID_PUBLICACION INTEGER NOT NULL,
+        ID_CLIENTE INTEGER NOT NULL,
+        PREGUNTA TEXT NOT NULL,
+        FECHA_PREGUNTA TEXT NOT NULL,
+        RESPUESTA TEXT NULL,
+        FECHA_RESPUESTA TEXT NULL,
+        
+        FOREIGN KEY (ID_PUBLICACION) REFERENCES PUBLICACION(ID_PUBLICACION),
+        FOREIGN KEY (ID_CLIENTE) REFERENCES USUARIO(ID_USUARIO)
+);
+
+
+/*****************************************************************************************/
+/*************************************Inercion de datos **********************************/
+
+
+/* rol */
+INSERT
+INTO	ROL (codigo,nombre)
+VALUES	('ADM','Administrador'),
+		('VEND','Vendedor'),
+		('CLI','Cliente');
+  
+/* localidad */
+INSERT
+INTO	LOCALIDAD	(codigo, nombre)
+VALUES	('CABA','Ciudad Autonoma de Buenos Aires'),
+		('GBA', 'Gran Buenos Aires'),
+		('CBA', 'Cordoba- Capital'),
+		('SLN', 'San Luis- Capital'),
+		('IGU', 'Iguazu');
+
+INSERT INTO USUARIO (nombre, apellido, dni, edad, email, password, domicilio, id_localidad, id_rol, token)
+VALUES
+    ('Mailen', 'Acosta', '1234567', 21, 'macosta@email.com', 'password123', 'Calle Luna 111', 1, 1, NULL),  
+    ('Camila', 'Losada', '41640294', 26, 'camila.losada@email.com', 'clavecamila', 'Calle Luna 123', 1, 1, NULL),  
+    ('Santiago', 'Fazzini', '25878525', 36, 'sfazzini@email.com', 'passsantiago', 'Calle Luna 456', 1, 1, NULL),  
+    ('Laura', 'Torres', '56789012', 28, 'laura.torres@email.com', 'laurasegura', 'Calle Luna 111', 1, 3, NULL),  
+    ('Carlos', 'Ramírez', '67890123', 32, 'carlos.ramirez@email.com', 'carpass123', 'Calle Estrella 222', 2, 2, NULL),
+    ('Sofía', 'Hernández', '78901234', 27, 'sofia.hernandez@email.com', 'secure123', 'Avenida del Mar 333', 3, 2, NULL),
+    ('Andrés', 'Fernández', '89012345', 45, 'andres.fernandez@email.com', 'andrespass', 'Calle del Río 444', 4, 3, NULL),
+    ('Lucía', 'Castillo', '90123456', 31, 'lucia.castillo@email.com', 'lucypass', 'Calle Verde 555', 5, 3, NULL),  
+    ('Javier', 'Moreno', '01234567', 38, 'javier.moreno@email.com', 'javierclave', 'Calle del Cielo 666', 1, 3, NULL),
+    ('Camila', 'Salas', '12345678', 29, 'camila.salas@email.com', 'salas1234', 'Calle de la Luna 777', 2, 3, NULL),  
+    ('Diego', 'Rojas', '23456789', 34, 'diego.rojas@email.com', 'diegopass', 'Avenida del Sol 888', 3, 3, NULL),
+    ('Valentina', 'Cruz', '34567890', 24, 'valentina.cruz@email.com', 'valenclave', 'Calle de la Paz 999', 4, 3, NULL),  
+    ('Fernando', 'Vázquez', '45678901', 50, 'fernando.vazquez@email.com', 'ferclave50', 'Calle de la Esperanza 1010', 5, 3, NULL),
+    ('Natalia', 'Díaz', '56789013', 26, 'natalia.diaz@email.com', 'natclave26', 'Calle de la Alegría 1111', 1, 3, NULL),  
+    ('Esteban', 'Castro', '67890124', 36, 'esteban.castro@email.com', 'castropass', 'Calle del Viento 1212', 2, 2, NULL),
+    ('Clara', 'González', '78901235', 23, 'clara.gonzalez@email.com', 'clarapass23', 'Avenida de la Libertad 1313', 3, 3, NULL),  
+    ('Ricardo', 'Paredes', '89012346', 41, 'ricardo.paredes@email.com', 'paredes41', 'Calle del Futuro 1414', 4, 2, NULL),
+    ('Isabella', 'Maldonado', '90123457', 33, 'isabella.maldonado@email.com', 'isab33pass', 'Calle de la Unidad 1515', 5, 3, NULL),
+    ('Luisana', 'Pinto', '01234568', 30, 'luisana.pinto@email.com', 'luisana30', 'Calle del Águila 1616', 1, 3, NULL),  
+    ('Gustavo', 'Benitez', '12345679', 39, 'gustavo.benitez@email.com', 'gpass39', 'Calle del Tigre 1717', 2, 3, NULL),
+    ('Patricia', 'Cano', '23456780', 29, 'patricia.cano@email.com', 'cano29clave', 'Avenida del Fuego 1818', 3, 3, NULL),  
+    ('Victor', 'Acosta', '34567891', 42, 'victor.acosta@email.com', 'acosta42', 'Calle del Eco 1919', 4, 3, NULL),
+    ('Tania', 'Ceballos', '45678902', 25, 'tania.ceballos@email.com', 'taniasegura', 'Calle del Bosque 2020', 5, 2, NULL),
+    ('Alberto', 'Moya', '56789014', 37, 'alberto.moya@email.com', 'albert37', 'Calle de la Montaña 2121', 1, 3, NULL),
+    ('Cecilia', 'Mora', '67890125', 28, 'cecilia.mora@email.com', 'mora28clave', 'Calle del Agua 2222', 2, 2, NULL),
+    ('Martín', 'Reyes', '78901236', 34, 'martin.reyes@email.com', 'martin34', 'Avenida de la Vida 2323', 3, 3, NULL),
+    ('Gloria', 'Figueroa', '89012347', 49, 'gloria.figueroa@email.com', 'gloria49', 'Calle del Árbol 2424', 4, 2, NULL),
+    ('Fernando', 'Salazar', '90123458', 26, 'fernando.salazar@email.com', 'fsalazar26', 'Calle de la Eternidad 2525', 5, 3, NULL),  
+    ('Mariano', 'Galindo', '01234569', 30, 'mariano.galindo@email.com', 'galindo30', 'Calle del Silencio 2626', 1, 2, NULL),
+    ('Sandra', 'Núñez', '12345680', 32, 'sandra.nunez@email.com', 'sandran32', 'Calle del Destino 2727', 2, 3, NULL),
+    ('Alina', 'Pérez', '23456781', 24, 'alina.perez@email.com', 'alina24pass', 'Avenida de los Ángeles 2828', 3, 3, NULL),
+    ('Nicolás', 'Sotelo', '34567892', 40, 'nicolas.sotelo@email.com', 'sotelo40clave', 'Calle del Corazón 2929', 4, 3, NULL),  
+    ('Evelyn', 'Ríos', '45678903', 35, 'evelyn.rios@email.com', 'evelyn35pass', 'Calle del Deseo 3030', 5, 2, NULL),
+    ('Samuel', 'Duarte', '56789015', 38, 'samuel.duarte@email.com', 'duarte38clave', 'Calle del Canto 3131', 1, 3, NULL),
+    ('Mariana', 'Cordero', '67890126', 27, 'mariana.cordero@email.com', 'cordero27', 'Calle del Viaje 3232', 2, 3, NULL),  
+    ('Ricardo', 'Torres', '78901237', 33, 'ricardo.torres@email.com', 'torres33', 'Calle del Recuerdo 3333', 3, 2, NULL),
+    ('Carolina', 'Alvarado', '89012348', 45, 'carolina.alvarado@email.com', 'caro45seguro', 'Calle del Horizonte 3434', 4, 3, NULL),
+    ('Ezequiel', 'Bravo', '90123459', 30, 'ezequiel.bravo@email.com', 'bravo30pass', 'Calle de la Luz 3535', 5, 3, NULL),  
+    ('Selene', 'Valdés', '01234570', 29, 'selene.valdes@email.com', 'selene29clave', 'Calle de la Fuerza 3636', 1, 2, NULL),
+    ('Gabriel', 'López', '12345681', 36, 'gabriel.lopez@email.com', 'gabriel36', 'Avenida del Amor 3737', 2, 3, NULL),
+    ('Silvana', 'Mendoza', '23456782', 22, 'silvana.mendoza@email.com', 'mendoza22', 'Calle del Poder 3838', 3, 3, NULL),  
+    ('Héctor', 'Aguirre', '34567893', 41, 'hector.aguirre@email.com', 'aguirre41', 'Calle del Cambio 3939', 4, 3, NULL),
+    ('Fabiola', 'Quintero', '45678904', 25, 'fabiola.quintero@email.com', 'fabiquin25', 'Calle del Triunfo 4040', 5, 2, NULL);
+
+INSERT INTO MENU (titulo, accion, id_rol)
+VALUES ('Mis Datos', '/misdatos', 1),
+		('Mis Datos', '/misdatos', 2),
+		('Mis Datos', '/misdatos', 3),
+		('Mis Compras', '/miscompras', 1),
+		('Mis Compras', '/miscompras', 2),
+		('Mis Compras', '/miscompras', 3),
+		('Mis Ventas', '/misventas', 2),
+		('Mis Publicaciones', '/mispublicaciones', 2),
+		('Administrar productos', '/adminprod', 1),
+                    ('Mis Preguntas', '/mispreguntas', 1),
+                    ('Mis Preguntas', '/mispreguntas', 2),
+                    ('Mis Preguntas', '/mispreguntas', 3),
+                    ('Mis Respuestas', '/misrespuestas', 2);
+		
+
+
+
+INSERT INTO ESTADO (descripcion)
+VALUES ('Pendiente'),
+        ('Finalizado');
+
+/* categoria*/
+INSERT 
+INTO	categoria (nombre_categoria)
+VALUES	('Teléfonos'),
+		('Accesorios'), 
+		('SmartWatch');
+
+
+/* producto */
+INSERT 
+INTO	producto (nombre, id_categoria, ean)
+VALUES	          ('Smartphone Samsung Galaxy S21', 1, 'SM-000001'),
+		('Auriculares Sony WH-1000XM4',2, 'AU-000002'),
+		('Reloj Inteligente Garmin', 3, 'RI-000003'),
+		('Smartphone Xiaomi Mi 11', 1, 'SM-000004'),
+		('Auriculares Bose QuietComfort', 2, 'AU-000005'),
+		('Reloj Inteligente Apple Watch', 3, 'RI-000006'),
+		('Smartphone OnePlus 9', 1, 'SM-000007'),
+		('Auriculares Apple AirPods Pro', 2, 'AU-000008'),
+		('Reloj Inteligente Fitbit Versa', 3, 'RI-000009'),
+		('Smartphone Google Pixel 5', 1, 'SM-000010'),
+		('Auriculares JBL Club One', 2, 'AU-000011'),
+		('Reloj Inteligente TicWatch Pro', 3, 'RI-000012');
+
+
+INSERT INTO PUBLICACION (id_producto, id_vendedor, breve_descripcion, stock, costo, ruta_imagen, activa)
+VALUES 	          (1, 15, 'Disfruta de la potencia del procesador Exynos, una pantalla Dynamic AMOLED y una cámara de alta resolución para capturar cada momento.', 100, 250000, '/assets/img/sams21.jpg',1 ),
+		(3, 15, 'Ideal para deportistas, con GPS integrado, monitoreo de actividad y resistencia al agua para acompañarte en todas tus aventuras.', 300, 90000, '/assets/img/swgarmin.jpg',1 ),
+		(4, 15, 'Rendimiento excepcional con Snapdragon 888, pantalla AMOLED con tasa de refresco de 120 Hz y carga rápida para un día lleno de acción.', 50, 190000, '/assets/img/ximi11.jpg',1 ),
+		(3, 23, 'Con funciones avanzadas de fitness y navegación, este reloj es el aliado perfecto para tu estilo de vida activo.', 125, 85000, '/assets/img/swgarmin.jpg',0 ),
+		(6, 23, 'Estilo y funcionalidad en tu muñeca: monitoreo de salud, conexión con tu iPhone y una amplia gama de aplicaciones.', 200, 95000, '/assets/img/aw33f.png',1 ),
+		(9, 23, 'Rastrea tu salud y actividad diaria con facilidad, recibe notificaciones inteligentes y personaliza tu experiencia.', 30, 97000, '/assets/img/fitbitversa.jpg',1 ),
+		(12, 23, 'Innovador diseño de pantalla dual con modo de batería extendida y todas las herramientas que necesitas para tu día a día.', 50, 70000, '/assets/img/ticwatch.webp',1 ),
+		(2, 27, 'Cancelación de ruido líder en la industria, calidad de sonido superior y comodidad para largas sesiones de escucha.', 125, 100000, '/assets/img/sonywh.webp',1 ),
+		(6, 27, 'Luce un diseño premium mientras controlas tu salud, entrenamientos y mucho más desde tu muñeca.', 200, 95000, '/assets/img/aw33f.png',1 ),
+		(8, 27, 'Audio espacial, cancelación activa de ruido y ajuste cómodo para una experiencia de sonido inigualable.', 30, 200000, '/assets/img/airpodspro.jpg',1 ),
+		(11, 27, 'Sonido profesional con bajos potentes, cancelación de ruido ajustable y diseño robusto para audiófilos exigentes.', 50, 175000, '/assets/img/jblclubone.webp',1 );
+		
+
+INSERT INTO venta (fecha_pedido, nro_venta, id_cliente, id_publicacion, cantidad, costo, id_estado, fecha_entrega)
+VALUES 
+('2024-11-01', 'V-0001', 7, 1, 1, 250000, 2, '2024-11-06'),
+('2024-11-02', 'V-0002', 8, 2, 2, 180000, 2, '2024-11-06'),
+('2024-11-03', 'V-0003', 9, 3, 1, 190000, 2, '2024-11-09'),
+('2024-11-04', 'V-0004', 10, 4, 3, 255000, 1, NULL),
+('2024-11-05', 'V-0005', 11, 4, 1, 85000, 1, NULL),
+('2024-11-06', 'V-0006', 12, 1, 2, 500000, 2, '2024-11-11'),
+('2024-11-07', 'V-0007', 13, 5, 4, 380000, 2, '2024-11-12'),
+('2024-11-08', 'V-0008', 14, 7, 1, 70000, 2, '2024-11-13'),
+('2024-11-09', 'V-0009', 7, 9, 2, 190000, 1, NULL),
+('2024-11-10', 'V-0010', 8, 11, 1, 175000, 2, '2024-11-15'),
+('2024-11-11', 'V-0011', 9, 1, 1, 250000, 2, '2024-11-16'),
+('2024-11-12', 'V-0012', 10, 11, 1, 175000, 1, NULL),
+('2024-11-13', 'V-0013', 11, 11, 1, 175000, 2, '2024-11-18'),
+('2024-11-14', 'V-0014', 12, 2, 2, 180000, 2, '2024-11-18'),
+('2024-11-15', 'V-0015', 13, 2, 2, 180000, 2, '2024-11-20'),
+('2024-11-16', 'V-0016', 14, 5, 3, 285000, 1, NULL),
+('2024-11-17', 'V-0017', 7, 3, 1, 190000, 2, '2024-11-22'),
+('2024-11-18', 'V-0018', 8, 3, 2, 380000, 2, '2024-11-22'),
+('2024-11-19', 'V-0019', 9, 3, 3, 570000, 2, '2024-11-24');
+
+INSERT INTO OPINION (id_venta, puntaje, comentario)
+VALUES (1, 4, "Muy buen celular! La bateria es muy buena y rinde lo que necesito."),
+(2, 2, "Malo. No es lo que esperaba"),
+(3, 3, null),
+(6, 3, null),
+(7, 5, "Me encanta!"),
+(8, 2, null),
+(10, 4, "Buena relacion precio-calidad."),
+(11, 2, null),
+(13, 3, null),
+(14, 3, "Le doy 3 estrellas porque la bateria no dura tanto como esperaba."),
+(15, 3, null),
+(17, 3, null),
+(18, 2, "Me vino sin cargador ni auriculares."),
+(19, 4, null);
+
+INSERT
+INTO PREGUNTA_RESPUESTA (ID_PUBLICACION, ID_CLIENTE, PREGUNTA, FECHA_PREGUNTA, RESPUESTA, FECHA_RESPUESTA)
+VALUES  (1,7,'Buenas tardes, viene con cargador?','2024-11-03','Hola! Gracias por la pregunta! No viene con cargador. Saludos.', '2024-11-09'),
+        (1,11,'de cuanto es el procesador?','2024-11-21',null,null),
+        (10,9,'buenas, tienen cancelacion de sonido?','2024-12-01','muchas gracias por tu pregunta! tiene canelacion de sonido. En la descripcion podes encontrar más detalles. Saludos!', '2024-12-01'),
+        (4,11,'hola. que colores tenes disponibles?','2024-12-09',null,null);
+
