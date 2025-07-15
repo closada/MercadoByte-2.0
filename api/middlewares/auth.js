@@ -1,20 +1,17 @@
 const jwt = require('jsonwebtoken');
 const SECRET = 'DayR7RxvEM4T4efkoEZBSVDjVqrmtdaQZHepj-D4L43GB7mzywkDtr7K-LpjvfKdRRGEqIcvYAPBjCVXñ.';
 
-
 exports.generarToken = (usuario) => {
-  exports.generarToken = (usuario) => {
   return jwt.sign(
     {
-      id: usuario.id,
-      email: usuario.email,
-      id_rol: usuario.ID_ROL   // asegúrate de que este campo exista
+      id: usuario.id_usuario,          
+      nombre: usuario.nombre,
+      id_rol: usuario.ID_ROL,          
+      rol: usuario.rol?.nombre_rol     
     },
     SECRET,
-    { expiresIn: '2h' }
+    { expiresIn: '2h' }                // JWT expira en 2 horas automáticamente
   );
-};
-
 };
 
 exports.requiereLogin = (req, res, next) => {

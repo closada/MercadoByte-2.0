@@ -40,6 +40,8 @@ db.venta.belongsTo(db.publicacion, { foreignKey: 'ID_PUBLICACION' });
 db.venta.belongsTo(db.estado, { foreignKey: 'ID_ESTADO' });
 
 db.opinion.belongsTo(db.venta, { foreignKey: 'ID_VENTA' });
+db.venta.hasOne(db.opinion, { foreignKey: 'ID_VENTA' });
+
 
 db.menu.belongsTo(db.rol, { foreignKey: 'ID_ROL' });
 
