@@ -7,6 +7,7 @@ import Footer from './Footer';
 import LoginModal from './LoginModal';
 import ExpiredModal from './ExpiredModal';
 
+
 export default function Layout() {
   const [usuarioaut, setUsuarioaut] = useState(estaAutenticado());
   const [opMenu, setOpMenu] = useState([]);
