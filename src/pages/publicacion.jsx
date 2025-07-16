@@ -1,3 +1,12 @@
+import { useParams } from 'react-router-dom';
+
 export default function Publicacion() {
-  return <h1>Página de Publicacion</h1>;
+  const { id } = useParams();
+
+  return (
+    <div className="container">
+      <h1>Vista de publicación</h1>
+      <p>ID: {id}</p>
+    </div>
+  );
 }

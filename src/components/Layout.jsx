@@ -8,6 +8,7 @@ import LoginModal from './LoginModal';
 import ExpiredModal from './ExpiredModal';
 
 
+
 export default function Layout() {
   const [usuarioaut, setUsuarioaut] = useState(estaAutenticado());
   const [opMenu, setOpMenu] = useState([]);
@@ -74,7 +75,7 @@ export default function Layout() {
   return (
     <div className="d-flex flex-column min-vh-100">
       {/* NAVBAR */}
-      <nav className="navbar navbar-expand-lg bg-body-secondary" style={{ backgroundColor: '#3190cd' }}>
+      <nav className="navbar navbar-expand-lg bg-body-secondary">
         <div className="container-fluid">
           <a className="navbar-brand" href="/">
             <img src="/assets/img/logo4.png" alt="mercadobyte" height="60" />

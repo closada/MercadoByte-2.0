@@ -1,0 +1,36 @@
+.fixed-size {
+    height: 200px; /* Ajusta la altura según lo que necesites */
+    object-fit: cover; /* Asegura que las imágenes mantengan proporción sin deformarse */
+}
+
+
+/* Cambia el color de las flechas del carrusel a negro */
+.carousel-control-prev-icon {
+  background-image: url('data:image/svg+xml;charset=UTF8,<svg xmlns="http://www.w3.org/2000/svg" fill="%23000000" viewBox="0 0 16 16"><path d="M11.354 1.354a.5.5 0 0 0-.708 0L4.5 7.5l6.146 6.146a.5.5 0 0 0 .708-.708L5.707 7.5l5.647-5.646a.5.5 0 0 0 0-.708z"/></svg>');
+}
+
+.carousel-control-next-icon {
+  background-image: url('data:image/svg+xml;charset=UTF8,<svg xmlns="http://www.w3.org/2000/svg" fill="%23000000" viewBox="0 0 16 16"><path d="M4.646 1.354a.5.5 0 0 1 .708 0L11.5 7.5 5.354 13.646a.5.5 0 0 1-.708-.708L10.293 7.5 4.646 2.354a.5.5 0 0 1 0-.708z"/></svg>');
+}
+
+
+.banner {
+  position: relative;
+  height: 40vh; /* Ajusta la altura según lo necesario */
+  overflow: hidden;
+}
+
+.banner img {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+
+
+.btn-primary {
+    background-color: #3190cd !important;
+}
+
+.btn-primary:hover {
+    background-color: #103a71 !important;
+}
