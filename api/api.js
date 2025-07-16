@@ -12,7 +12,7 @@ const PORT = 3001;
 
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
-app.use('../assets/img', express.static(path.join(__dirname, '../assets/img')));
+app.use('../assets/img', express.static(path.join(__dirname, '../public/assets/img')));
 
 // ========= LOGIN / AUTENTICAR =========
 app.post('/login', async (req, res) => {
@@ -542,7 +542,7 @@ app.patch('/editpublicacion/:id', async (req, res) => {
       const nombreArchivo = `${timestamp}_${imgnombre}`;
 
       // Ruta absoluta donde se guardará la imagen
-      const filePath = path.join(__dirname, '..', 'assets', 'img', nombreArchivo);
+      const filePath = path.join(__dirname, '..', 'public', 'assets', 'img', nombreArchivo);
 
       // Guardar archivo en disco
       await fs.promises.writeFile(filePath, archivoBuffer);
@@ -754,7 +754,7 @@ app.post('/publicacion', async (req, res) => {
       const buffer = Buffer.from(imgbase64, 'base64');
       const timestamp = new Date().toISOString().replace(/[-:.TZ]/g, '');
       const nombreArchivo = `${timestamp}_${imgnombre}`;
-      const fullPath = path.join(__dirname, '..', 'assets', 'img', nombreArchivo);
+      const fullPath = path.join(__dirname, '..', 'public', 'assets', 'img', nombreArchivo);
 
       fs.writeFileSync(fullPath, buffer);
       ruta_imagen = path.join('assets', 'img', nombreArchivo).replace(/\\/g, '/');
