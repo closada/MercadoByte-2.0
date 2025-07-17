@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
-import './inicio.css';
+import '../styles/inicio.css';
 
 export default function Inicio() {
   const [publicaciones, setPublicaciones] = useState([]);
@@ -22,6 +22,7 @@ export default function Inicio() {
 
   const verPublicacion = (id) => {
     navigate(`/publicacion/${id}`);
+	
   };
 
   const getChunks = (array, chunkSize) => {

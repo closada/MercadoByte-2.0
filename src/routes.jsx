@@ -1,4 +1,3 @@
-// src/routes.jsx
 import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import Inicio from './pages/inicio';
@@ -23,10 +22,10 @@ export default function AppRoutes() {
         <Route path="misventas" element={<PrivateRoute><MisVentas /></PrivateRoute>} />
         <Route path="mispublicaciones" element={<PrivateRoute><MisPublicaciones /></PrivateRoute>} />
         <Route path="adminprod" element={<PrivateRoute><AdminProd /></PrivateRoute>} />
-        <Route path="publicacion/:id" element={<PrivateRoute><Publicacion /></PrivateRoute>} />
+        <Route path="publicacion/:id" element={<Publicacion />} />
         <Route path="mispreguntas" element={<PrivateRoute><MisPreguntas /></PrivateRoute>} />
         <Route path="misrespuestas" element={<PrivateRoute><MisRespuestas /></PrivateRoute>} />
-        <Route path="buscador/:texto" element={<PrivateRoute><Buscador /></PrivateRoute>} />
+        <Route path="buscador/:texto" element={<Buscador />} />
       </Route>
     </Routes>
   );

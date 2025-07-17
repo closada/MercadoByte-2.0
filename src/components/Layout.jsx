@@ -1,13 +1,9 @@
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { Modal } from 'bootstrap';
-import { getRol, estaAutenticado, getUsuario } from '../services/auth';
 import api from '../services/api';
 import Footer from './Footer';
 import LoginModal from './LoginModal';
-import ExpiredModal from './ExpiredModal';
-
-
+import { getRol, estaAutenticado, getUsuario } from '../services/auth';
 
 export default function Layout() {
   const [usuarioaut, setUsuarioaut] = useState(estaAutenticado());
@@ -15,6 +11,8 @@ export default function Layout() {
   const [email, setEmail] = useState('');
   const [clave, setClave] = useState('');
   const [error, setError] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,7 +41,7 @@ export default function Layout() {
       setUsuarioaut(true);
       setClave('');
       setEmail('');
-      hideModal('loginModal');
+      setShowLoginModal(false);
     } catch (err) {
       setError(true);
     }
@@ -63,13 +61,6 @@ export default function Layout() {
     if (info.value !== '') {
       navigate(`/buscador/${info.value}`);
     }
-  };
-
-  const hideModal = (id) => {
-    const modalEl = document.getElementById(id);
-    const modal = Modal.getInstance(modalEl);
-    if (modal) modal.hide();
-    document.querySelector('.modal-backdrop')?.remove();
   };
 
   return (
@@ -92,9 +83,9 @@ export default function Layout() {
             <ul className="navbar-nav ms-auto">
               {!usuarioaut && (
                 <li className="nav-item">
-                  <a className="nav-link" href="#" onClick={() => new Modal(document.getElementById('loginModal')).show()}>
+                  <button className="nav-link btn btn-link" onClick={() => setShowLoginModal(true)}>
                     Ingresá
-                  </a>
+                  </button>
                 </li>
               )}
 
@@ -128,8 +119,18 @@ export default function Layout() {
       </div>
 
       <Footer />
-      <LoginModal {...{ email, setEmail, clave, setClave, login, error, setError }} />
-      <ExpiredModal />
+
+      <LoginModal
+        show={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        email={email}
+        setEmail={setEmail}
+        clave={clave}
+        setClave={setClave}
+        login={login}
+        error={error}
+        setError={setError}
+      />
     </div>
   );
 }
