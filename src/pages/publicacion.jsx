@@ -9,8 +9,9 @@ import { API_URL } from '../config';
 
 import { useAuth } from '../context/AuthContext';
 
-import ExpiredModal from '../components/ExpiredModal';
+import { useAuthModals } from '../context/AuthModalContext';
 import LoginModal from '../components/LoginModal';
+import ExpiredModal from '../components/ExpiredModal';
 
 
 
@@ -28,8 +29,10 @@ export default function Publicacion() {
 
 
 	const { isAuthenticated } = useAuth();
-	const [showLoginModal, setShowLoginModal] = useState(false);
-	const [showExpiredModal, setShowExpiredModal] = useState(false);
+
+	const { showExpiredModal, setShowLoginModal, setShowExpiredModal } = useAuthModals();
+
+
 	const [showPreguntaModal, setShowPreguntaModal] = useState(false);
 
 
@@ -38,6 +41,12 @@ export default function Publicacion() {
   }, []);
 
 
+useEffect(() => {
+  if (isAuthenticated && showExpiredModal) {
+    setShowExpiredModal(false);
+    setShowPreguntaModal(true);
+  }
+}, [isAuthenticated]);
 
 	const obtenerPublicacion = async (id) => {
 	  try {
@@ -59,12 +68,13 @@ export default function Publicacion() {
   };
   
   const handlePreguntaClick = () => {
-	  if (!isAuthenticated) {
-		setShowExpiredModal(true); // Mostrar modal que pide loguearse
-	  } else {
-		setShowPreguntaModal(true); // Mostrar modal para escribir pregunta
-	  }
-	};
+    if (!isAuthenticated) {
+      setShowExpiredModal(true);
+    } else {
+      setShowPreguntaModal(true);
+    }
+  };
+
 
 
   const guardarPregunta = async () => {
@@ -76,42 +86,51 @@ export default function Publicacion() {
       pregunta
     };
 
+    //console.log(body);
+
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}pregunta`, body);
+      await axios.post(`${API_URL}pregunta`, body);
 	  setShowPreguntaModal(false);
       setModales({ ...modales, pregunta: false, cambios: true });
       setPregunta('');
-      obtenerPublicacion();
+      obtenerPublicacion(id);
     } catch (err) {
       setModales({ ...modales, error: true });
     }
   };
 
   const comprarProducto = async () => {
-    if (!estaAutenticado()) return;
+    if (estaAutenticado())
+    {
+      const fechaActual = new Date();
+      const fechaVenta = fechaActual.toISOString().split('T')[0];
+      const nroVenta = `V-${id}-${getUsuario()}-${fechaActual.getTime()}`;
 
-    const fechaActual = new Date();
-    const fechaVenta = fechaActual.toISOString().split('T')[0];
-    const nroVenta = `V-${id}-${getUsuario()}-${fechaActual.getTime()}`;
+      const body = {
+        id_publicacion: parseInt(id),
+        id_comprador: getUsuario(),
+        cantidad: cantComprar,
+        costo: producto.precio * cantComprar,
+        fecha_venta: fechaVenta,
+        nro_venta: nroVenta
+      };
 
-    const body = {
-      id_publicacion: parseInt(id),
-      id_comprador: getUsuario(),
-      cantidad: cantComprar,
-      costo: producto.precio * cantComprar,
-      fecha_venta: fechaVenta,
-      nro_venta: nroVenta
-    };
-
-    try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}compra`, body);
-      if (res.data.id > 0) {
-        setModales({ ...modales, compra: true });
-        // Redirigir a "Mis Compras"
-        // Por ahora no implementamos redirección, sólo modal
+      //console.log(body);
+      try {
+        const res = await axios.post(`${API_URL}compra`, body);
+        if (res.data.id > 0) {
+          setModales({ ...modales, compra: true });
+          // Redirigir a "Mis Compras"
+          // Por ahora no implementamos redirección, sólo modal
+        }
+      } catch (err) {
+        console.error(err);
       }
-    } catch (err) {
-      console.error(err);
+      obtenerPublicacion(id);
+
+    } else {
+      setShowExpiredModal(true);
+      return;
     }
   };
 
@@ -239,12 +258,6 @@ export default function Publicacion() {
 		setShowLoginModal(true);
 	  }}
 	/>
-
-	<LoginModal
-	  show={showLoginModal}
-	  onClose={() => setShowLoginModal(false)}
-	/>
-
     </div>
   );
 }
