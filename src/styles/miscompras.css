@@ -1,0 +1,20 @@
+/* Elimina las flechas del input number en navegadores modernos */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Para Firefox */
+}
+
+.btn-outline-primary {
+    color: #3190cd !important;
+    border-color: #3190cd !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: #3190cd !important;
+    color: white !important;
+}

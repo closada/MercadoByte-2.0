@@ -4,6 +4,8 @@ import axios from 'axios';
 import { estaAutenticado, getUsuario } from '../services/auth';
 import { Modal, Button } from 'react-bootstrap';
 import '../styles/publicacion.css';
+import { useNavigate } from 'react-router-dom';
+
 
 import { API_URL } from '../config';
 
@@ -17,6 +19,7 @@ import ExpiredModal from '../components/ExpiredModal';
 
 export default function Publicacion() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [producto, setProducto] = useState(null);
   const [cantComprar, setCantComprar] = useState(1);
   const [pregunta, setPregunta] = useState('');
@@ -121,7 +124,7 @@ useEffect(() => {
         if (res.data.id > 0) {
           setModales({ ...modales, compra: true });
           // Redirigir a "Mis Compras"
-          // Por ahora no implementamos redirección, sólo modal
+          //navigate(`/miscompras`);
         }
       } catch (err) {
         console.error(err);
@@ -191,6 +194,38 @@ useEffect(() => {
         <div className="card-body p-0"><p>{producto.descripcion}</p></div>
       </div>
 
+      {/* Opiniones */}
+      {producto.opiniones?.length > 0 ? (
+        <div className="card border-0 border-top">
+          <div className="card-title"><h2>Opiniones</h2></div>
+          <div className="card-body p-0">
+            {producto.opiniones.map((o, index) => (
+              <div key={index} className="card border-0 border-top bg-light mb-3">
+                <div className="card-header d-flex align-items-center">
+                  {[...Array(o.puntaje)].map((_, i) => (
+                    <i key={`full-${i}`} className="bi bi-star-fill text-warning"></i>
+                  ))}
+                  {[...Array(5 - o.puntaje)].map((_, i) => (
+                    <i key={`empty-${i}`} className="bi bi-star text-warning"></i>
+                  ))}
+                </div>
+                {o.comentario && (
+                  <div className="card-body">
+                    <div className="card-text">{o.comentario}</div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="card border-0 border-top">
+          <div className="card-title"><h2>Opiniones</h2></div>
+          <div className="card-body p-0"><p>Esta publicación aún no tiene opiniones.</p></div>
+        </div>
+      )}
+
+
       {/* Preguntas */}
       <div className="card border-0 border-top">
         <div className="card-title d-flex justify-content-between align-items-center">
@@ -239,11 +274,20 @@ useEffect(() => {
         <Modal.Footer><Button variant="secondary" onClick={() => setModales({ ...modales, cambios: false })}>Cerrar</Button></Modal.Footer>
       </Modal>
 
-      <Modal show={modales.compra} onHide={() => setModales({ ...modales, compra: false })}>
+            <Modal show={modales.compra} onHide={() => {
+        setModales({ ...modales, compra: false });
+        navigate('/miscompras');
+      }}>
         <Modal.Header closeButton><Modal.Title>Felicitaciones</Modal.Title></Modal.Header>
         <Modal.Body>¡Se ha procesado la compra correctamente! Podrá ver el detalle desde "Mis Compras".</Modal.Body>
-        <Modal.Footer><Button variant="secondary" onClick={() => setModales({ ...modales, compra: false })}>Cerrar</Button></Modal.Footer>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => {
+            setModales({ ...modales, compra: false });
+            navigate('/miscompras');
+          }}>Cerrar</Button>
+        </Modal.Footer>
       </Modal>
+
 
       <Modal show={modales.error} onHide={() => setModales({ ...modales, error: false })}>
         <Modal.Header closeButton><Modal.Title>Error</Modal.Title></Modal.Header>
