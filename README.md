@@ -111,38 +111,26 @@ Proyecto Final – Programación Web 2 – UCES – 2025
 
 ## 🖼️ Capturas de pantalla
 
-```markdown
 ### Vista de inicio
 
 ![Vista de inicio](adicionales/capturas/inicio.jpeg)
-```
 
-```markdown
 ### Vista de publicación
 
 ![Vista de publicación](adicionales/capturas/publicacion.jpeg)
-```
 
-```markdown
 ### Vista de Compras
 
 ![Vista de compras](adicionales/capturas/compras.jpeg)
-```
 
-```markdown
 ### Vista de Mis Preguntas
 
 ![Vista de mispreguntas](adicionales/capturas/mispreguntas.jpeg)
-```
 
-```markdown
 ### Vista de Mis Publicaciones
 
 ![Vista de mispublicaciones](adicionales/capturas/mispublicaciones.jpeg)
-```
 
-```markdown
 ### Vista del Carrito
 
 ![Vista de Carrito](adicionales/capturas/carrito.jpeg)
-```
