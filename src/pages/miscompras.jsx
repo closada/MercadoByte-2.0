@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
-import { estaAutenticado, getUsuario } from '../services/auth';
+import { useAuth } from '../context/AuthContext';
 import '../styles/miscompras.css';
 
 export default function MisCompras() {
+  const { estaAutenticado, getUsuario } = useAuth();
   const [compras, setCompras] = useState([]);
   const [tieneCompras, setTieneCompras] = useState(false);
   const [modales, setModales] = useState({
@@ -60,8 +61,9 @@ export default function MisCompras() {
     //para que envíe como numero
     body.puntaje = Number(body.puntaje);
 
+
     try {
-      if (form.id_opinion === null) {
+      if (form.id_opinion === undefined) {
         await api.post('/opinion', body);
       } else {
         await api.patch(`/opinion/${form.id_venta}`, body);
@@ -109,21 +111,16 @@ export default function MisCompras() {
                     </div>
                     <div className="card-title d-flex align-items-center">
                       <h5>{c.producto}</h5>
-                      {c.id_opinion !== null && (
-                        <div className="ms-2">
                           {typeof c.puntaje === 'number' && c.puntaje >= 0 && c.puntaje <= 5 && (
-                              <>
+                              <div className="ms-2">
                                 {[...Array(c.puntaje)].map((_, i) => (
                                   <i key={`full-${i}`} className="bi bi-star-fill text-warning"></i>
                                 ))}
                                 {[...Array(5 - c.puntaje)].map((_, i) => (
                                   <i key={`empty-${i}`} className="bi bi-star text-warning"></i>
                                 ))}
-                              </>
+                              </div>
                             )}
-
-                        </div>
-                      )}
                     </div>
                     <p className="card-text">
                       (${c.costo} x {c.cant}): ${c.total}

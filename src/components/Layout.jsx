@@ -2,7 +2,6 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import api from '../services/api';
 import Footer from './Footer';
-import { getRol, estaAutenticado, getUsuario } from '../services/auth';
 
 import { useAuthModals } from '../context/AuthModalContext';
 import { useAuth } from '../context/AuthContext';
@@ -10,6 +9,8 @@ import LoginModal from './LoginModal';
 import ExpiredModal from './ExpiredModal';
 
 export default function Layout() {
+  const { getRol, estaAutenticado, getUsuario } = useAuth();
+  
   const [usuarioaut, setUsuarioaut] = useState(estaAutenticado());
   const [opMenu, setOpMenu] = useState([]);
   const [email, setEmail] = useState('');

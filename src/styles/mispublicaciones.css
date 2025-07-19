@@ -1,0 +1,19 @@
+.btn-outline-primary {
+    color: #3190cd !important;
+    border-color: #3190cd !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: #3190cd !important;
+    color: white !important;
+}
+
+.botnaranja {
+  background-color:#fc8341 !important; 
+  color:white;
+}
+
+.botnaranja:hover {
+  background-color:#f6671a !important; 
+  
+}

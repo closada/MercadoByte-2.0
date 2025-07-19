@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { estaAutenticado, getUsuario } from '../services/auth';
 import { Modal, Button } from 'react-bootstrap';
 import '../styles/publicacion.css';
 import { useNavigate } from 'react-router-dom';
@@ -18,6 +17,7 @@ import ExpiredModal from '../components/ExpiredModal';
 
 
 export default function Publicacion() {
+  const { estaAutenticado, getUsuario } = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
   const [producto, setProducto] = useState(null);

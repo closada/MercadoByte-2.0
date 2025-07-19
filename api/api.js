@@ -1098,7 +1098,6 @@ app.get('/ventas/:id', async (req, res) => {
 });
 
 
-// ========= getPublicacionesConParametros =========
 app.get('/publicaciones/:id', async (req, res) => {
   const id = parseInt(req.params.id);
 
@@ -1108,24 +1107,26 @@ app.get('/publicaciones/:id', async (req, res) => {
       include: [
         {
           model: db.producto,
-          include: {
-            model: db.categoria
-          }
+          include: [
+            {
+              model: db.categoria
+            }
+          ]
         }
       ]
     });
 
     const result = publicaciones.map(p => ({
       id: p.id_publicacion,
-      titulo: p.producto.nombre,
+      titulo: p.producto?.nombre,
       stock: p.stock,
       total: p.costo,
-      categoria: p.producto.categoria.nombre_categoria,
+      categoria: p.producto?.categoria?.nombre_categoria,
       img: p.ruta_imagen,
       activa: p.activa,
       descripcion: p.breve_descripcion,
-      id_categoria: p.producto.categoria.id_categoria,
-      id_producto: p.producto.id_producto
+      id_categoria: p.producto?.categoria?.id_categoria,
+      id_producto: p.producto?.id_producto
     }));
 
     res.json(result);
@@ -1135,6 +1136,7 @@ app.get('/publicaciones/:id', async (req, res) => {
     res.status(500).json({ error: 'Error al obtener publicaciones' });
   }
 });
+
 
 
 // ========= postRefresh =========

@@ -8,13 +8,13 @@ import { AuthModalProvider } from './context/AuthModalContext';
 
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
         <AuthModalProvider>
           <AppRoutes />
         </AuthModalProvider>
-      </BrowserRouter>
-    </AuthProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 
