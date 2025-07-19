@@ -5,11 +5,14 @@ import axios from 'axios';
 import '../styles/mispreguntas.css';
 import { API_URL } from '../config';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
 
 export default function MisPreguntas() {
   const { estaAutenticado, getUsuario, sesionCaducada } = useAuth();
   const [preguntas, setPreguntas] = useState([]);
   const [tienePreguntas, setTienePreguntas] = useState(false);
+
+  const { vaciarCarrito } = useCart();
 
   const navigate = useNavigate();
 
@@ -18,7 +21,9 @@ export default function MisPreguntas() {
       const idUsuario = getUsuario();
       traerMisPreguntas(idUsuario);
     } else {
+      vaciarCarrito();
       sesionCaducada();
+
     }
   }, []);
 

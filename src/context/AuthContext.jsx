@@ -7,6 +7,8 @@ import {
   logout as logoutService,
 } from '../services/auth';
 
+import { useCart } from '../context/CartContext';
+
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
@@ -14,6 +16,8 @@ export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  const { vaciarCarrito } = useCart();
 
   // Validar token cada vez que cambie
   useEffect(() => {
@@ -26,6 +30,14 @@ export function AuthProvider({ children }) {
     setLoading(false);
   }, [token]);
 
+
+    useEffect(() => {
+      const storedToken = localStorage.getItem('jwt_token');
+      if (storedToken) {
+        setToken(storedToken);
+      }
+    }, []);
+
   function login(jwt) {
     localStorage.setItem('jwt_token', jwt);
     setToken(jwt);
@@ -34,6 +46,7 @@ export function AuthProvider({ children }) {
 
   function logout() {
     logoutService(navigate); // Llama a logout de backend
+    vaciarCarrito(); 
     setToken(null);
     setIsAuthenticated(false);
   }

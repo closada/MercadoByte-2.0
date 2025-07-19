@@ -6,6 +6,8 @@ import { useAuthModals } from '../context/AuthModalContext';
 import '../styles/misdatos.css';
 import { API_URL } from '../config';
 
+import { useCart } from '../context/CartContext';
+
 export default function MisDatos() {
   const { getUsuario, estaAutenticado, sesionCaducada } = useAuth();
   const [formData, setFormData] = useState({
@@ -21,6 +23,8 @@ export default function MisDatos() {
   const [error, setError] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
+  const { vaciarCarrito } = useCart();
+
   useEffect(() => {
     const id = getUsuario();
     if (id !== false) {
@@ -28,6 +32,7 @@ export default function MisDatos() {
       traerLocalidades();
     } else {
       sesionCaducada();
+      vaciarCarrito();
     }
   }, []);
 
@@ -81,6 +86,7 @@ export default function MisDatos() {
         });
     } else {
       sesionCaducada();
+      vaciarCarrito();
     }
   };
 

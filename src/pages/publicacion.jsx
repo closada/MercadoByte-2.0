@@ -14,6 +14,8 @@ import { useAuthModals } from '../context/AuthModalContext';
 import LoginModal from '../components/LoginModal';
 import ExpiredModal from '../components/ExpiredModal';
 
+import { useCart } from '../context/CartContext';
+
 
 
 export default function Publicacion() {
@@ -37,6 +39,8 @@ export default function Publicacion() {
 
 
 	const [showPreguntaModal, setShowPreguntaModal] = useState(false);
+
+  const { agregarAlCarrito } = useCart();
 
 
   useEffect(() => {
@@ -78,7 +82,17 @@ useEffect(() => {
     }
   };
 
+  const handleAgregarAlCarrito = () => {
+    if (!producto || cantComprar <= 0) return;
+      const productoParaCarrito = {
+      id_publicacion: id,
+      modelo: producto.producto_nombre,
+      costo: producto.precio,
+      ruta_imagen: producto.img
+    };
 
+    agregarAlCarrito(productoParaCarrito, cantComprar);
+  };
 
   const guardarPregunta = async () => {
     if (!estaAutenticado()) return;
@@ -184,6 +198,11 @@ useEffect(() => {
             <button className="btn btn-lg botnaranja" onClick={comprarProducto} disabled={!producto.activa || producto.stock === 0}>
               Comprar ahora
             </button>
+
+            <Button variant="btn btn-lg botazul" onClick={handleAgregarAlCarrito} disabled={!producto.activa || producto.stock === 0}>
+              Agregar al carrito
+            </Button>
+
           </div>
 
         </div>

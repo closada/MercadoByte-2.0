@@ -8,6 +8,8 @@ import { API_URL } from '../config';
 import { estaAutenticado, getUsuario, sesionCaducada } from '../services/auth';
 import { useAuth } from '../context/AuthContext';
 
+import { useCart } from '../context/CartContext';
+
 export default function MisVentas() {
   const { estaAutenticado, getUsuario, sesionCaducada } = useAuth();
   const [ventas, setVentas] = useState([]);
@@ -17,11 +19,14 @@ export default function MisVentas() {
 
   const navigate = useNavigate();
 
+  const { vaciarCarrito } = useCart();
+
   useEffect(() => {
     if (estaAutenticado()) {
       const idUsuario = getUsuario();
       traerVentas(idUsuario);
     } else {
+      vaciarCarrito();
       sesionCaducada();
     }
   }, []);
@@ -38,6 +43,7 @@ export default function MisVentas() {
 
   const cambiarEstado = async (id_venta) => {
     if (!estaAutenticado()) {
+      vaciarCarrito();
       sesionCaducada();
       return;
     }

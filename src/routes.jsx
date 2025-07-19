@@ -10,6 +10,7 @@ import Publicacion from './pages/publicacion';
 import MisPreguntas from './pages/mispreguntas';
 import MisRespuestas from './pages/misrespuestas';
 import Buscador from './pages/buscador';
+import Carrito from './components/Carrito';
 import PrivateRoute from './components/PrivateRoute';
 
 export default function AppRoutes() {
@@ -17,6 +18,7 @@ export default function AppRoutes() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Inicio />} />
+        <Route path="/carrito" element={<Carrito />} />
         <Route path="misdatos" element={<PrivateRoute><MisDatos /></PrivateRoute>} />
         <Route path="miscompras" element={<PrivateRoute><MisCompras /></PrivateRoute>} />
         <Route path="misventas" element={<PrivateRoute><MisVentas /></PrivateRoute>} />

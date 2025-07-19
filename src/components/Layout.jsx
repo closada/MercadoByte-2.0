@@ -8,6 +8,9 @@ import { useAuth } from '../context/AuthContext';
 import LoginModal from './LoginModal';
 import ExpiredModal from './ExpiredModal';
 
+import { useCart } from '../context/CartContext';
+import { Link } from 'react-router-dom';
+
 export default function Layout() {
   const { getRol, estaAutenticado, getUsuario } = useAuth();
   
@@ -20,6 +23,8 @@ export default function Layout() {
   const { login: loginGlobal, logout: logoutGlobal } = useAuth();
   const { showLoginModal, setShowLoginModal, showExpiredModal, setShowExpiredModal } = useAuthModals();
   const navigate = useNavigate();
+
+  const { carrito } = useCart();
 
   useEffect(() => {
     if (usuarioaut) {
@@ -81,6 +86,10 @@ export default function Layout() {
               <input className="form-control me-2" id="buscador" type="search" placeholder="Buscar..." />
               <button className="btn btn-light">Buscar</button>
             </form>
+          </div>
+          <div style= {{ marginRight: '10px', fontSize: '18px'}}>
+            <Link to="/carrito" className="nav-link"> <img src="/assets/img/shopping-cart.svg" alt="carrito" width="40" />
+            ({carrito.length})</Link>
           </div>
 
           <div className="d-flex align-items-center">

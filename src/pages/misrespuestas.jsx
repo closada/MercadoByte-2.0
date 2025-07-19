@@ -7,6 +7,8 @@ import '../styles/misrespuestas.css';
 import { API_URL } from '../config';
 import { useAuth } from '../context/AuthContext';
 
+import { useCart } from '../context/CartContext';
+
 export default function MisRespuestas() {
   const { estaAutenticado, getUsuario, sesionCaducada } = useAuth();
   const [preguntas, setPreguntas] = useState([]);
@@ -18,10 +20,13 @@ export default function MisRespuestas() {
 
   const navigate = useNavigate();
 
+  const { vaciarCarrito } = useCart();
+
   useEffect(() => {
     if (estaAutenticado()) {
       traerMisPreguntasVend();
     } else {
+      vaciarCarrito();
       sesionCaducada();
     }
   }, []);
@@ -55,6 +60,7 @@ export default function MisRespuestas() {
 
   const EnviarRespuesta = async (id) => {
     if (!estaAutenticado()) {
+      vaciarCarrito();
       sesionCaducada();
       return;
     }

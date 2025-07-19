@@ -6,6 +6,8 @@ const db = require('./models');
 const { generarToken, requiereLogin } = require('./middlewares/auth');
 const { Op } = require('sequelize');
 
+const bcrypt = require('bcrypt');
+
 
 const app = express();
 const PORT = 3001;
@@ -18,22 +20,35 @@ app.use('../assets/img', express.static(path.join(__dirname, '../public/assets/i
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
-  const usuario = await db.usuario.findOne({
-    where: { email, password },
-    include: db.rol
-  });
+  try {
+    // Buscamos solo por email
+    const usuario = await db.usuario.findOne({
+      where: { email },
+      include: db.rol
+    });
 
-  if (!usuario) {
-    return res.status(401).json({ error: 'Credenciales inválidas' });
+    if (!usuario) {
+      return res.status(401).json({ error: 'Credenciales inválidas' });
+    }
+
+    // Comparamos la contraseña enviada con la guardada (hasheada)
+    const passwordOk = await bcrypt.compare(password, usuario.password);
+    if (!passwordOk) {
+      return res.status(401).json({ error: 'Credenciales inválidas' });
+    }
+
+    const token = generarToken(usuario);
+
+    await usuario.update({ token });
+
+    res.json({ token });
+
+  } catch (err) {
+    console.error('Error en login:', err);
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
-
-  const token = generarToken(usuario);
-
-  // Guardar token en DB
-  await usuario.update({ token });
-
-  res.json({ token });
 });
+
 
 
 // ========= GETMENUCONPARAMETROS =========
@@ -316,7 +331,6 @@ app.patch('/usuario/:id', async (req, res) => {
   const id = parseInt(req.params.id);
   if (isNaN(id)) return res.status(400).json({ error: 'ID inválido' });
 
- 
   const { domicilio, id_localidad, password } = req.body;
 
   const datosActualizar = {};
@@ -327,7 +341,16 @@ app.patch('/usuario/:id', async (req, res) => {
     if (isNaN(loc)) return res.status(400).json({ error: 'id_localidad inválido' });
     datosActualizar.id_localidad = loc;
   }
-  if (password !== undefined) datosActualizar.password = password;
+
+  if (password !== undefined && password.trim() !== '') {
+    try {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      datosActualizar.password = hashedPassword;
+    } catch (err) {
+      console.error('Error al hashear la contraseña:', err);
+      return res.status(500).json({ error: 'Error al procesar la contraseña' });
+    }
+  }
 
   try {
     const [filasActualizadas] = await db.usuario.update(
@@ -346,6 +369,7 @@ app.patch('/usuario/:id', async (req, res) => {
     res.status(500).json({ error: 'Error al actualizar el usuario' });
   }
 });
+
 
 
 // ========= patchProducto =========

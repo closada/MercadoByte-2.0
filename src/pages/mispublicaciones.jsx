@@ -8,6 +8,8 @@ import '../styles/mispublicaciones.css';
 
 import EditPubModal from '../components/EditPubModal';
 
+import { useCart } from '../context/CartContext';
+
 
 export default function MisPublicaciones() {
   const navigate = useNavigate();
@@ -42,8 +44,12 @@ export default function MisPublicaciones() {
     imgnombre: ''
   });
 
+
+  const { vaciarCarrito } = useCart();
+
   useEffect(() => {
     if (!estaAutenticado()) {
+      vaciarCarrito();
       sesionCaducada();
       return;
     }
@@ -100,6 +106,7 @@ export default function MisPublicaciones() {
 
   const cambiarEstado = async (id, nuevoEstado) => {
     if (!estaAutenticado()) {
+      vaciarCarrito();
       sesionCaducada();
       return;
     }
