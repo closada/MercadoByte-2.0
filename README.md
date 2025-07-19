@@ -109,6 +109,14 @@ Proyecto Final – Programación Web 2 – UCES – 2025
 
 ---
 
+## Usuarios de testing/logueo
+
+**usuario administrador** mail: camila.losada@email.com | password: clavecami
+**usuario cliente** mail: lucia.castillo@email.com | password: lucypass
+**usuario vendedor** mail: tania.ceballos@email.com | password: taniasegura
+
+---
+
 ## 🖼️ Capturas de pantalla
 
 ### Vista de inicio
