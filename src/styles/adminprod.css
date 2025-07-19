@@ -1,0 +1,15 @@
+.auto-font-size {
+    font-size: clamp(12px, 2vw, 16px); /* Mínimo: 12px, Máximo: 16px, ajusta según el ancho */
+    white-space: nowrap; /* Evita saltos de línea */
+    overflow: hidden; /* Oculta el texto que sobrepase */
+    text-overflow: ellipsis; /* Añade puntos suspensivos si se corta */
+  }
+
+
+.btn-primary {
+    background-color: #3190cd !important;
+}
+
+.btn-primary:hover {
+    background-color: #103a71 !important;
+}

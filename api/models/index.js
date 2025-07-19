@@ -30,7 +30,8 @@ db.pregunta_respuesta = require('./pregunta_respuesta')(sequelize, DataTypes);
 db.usuario.belongsTo(db.localidad, { foreignKey: 'ID_LOCALIDAD' });
 db.usuario.belongsTo(db.rol, { foreignKey: 'ID_ROL' });
 
-db.producto.belongsTo(db.categoria, { foreignKey: 'ID_CATEGORIA' });
+db.producto.belongsTo(db.categoria, { foreignKey: 'ID_CATEGORIA', as: 'categoria' });
+db.categoria.hasMany(db.producto, { foreignKey: 'ID_CATEGORIA' });
 
 db.publicacion.belongsTo(db.producto, { foreignKey: 'ID_PRODUCTO' });
 db.publicacion.belongsTo(db.usuario, { as: 'vendedor', foreignKey: 'ID_VENDEDOR' });

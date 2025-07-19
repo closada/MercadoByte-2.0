@@ -1103,18 +1103,21 @@ app.get('/publicaciones/:id', async (req, res) => {
 
   try {
     const publicaciones = await db.publicacion.findAll({
-      where: { id_vendedor: id },
-      include: [
-        {
-          model: db.producto,
-          include: [
-            {
-              model: db.categoria
-            }
-          ]
-        }
-      ]
-    });
+        where: { id_vendedor: id },
+        include: [
+          {
+            model: db.producto,
+            include: [
+              {
+                model: db.categoria,
+                as: 'categoria'
+              }
+            ]
+          }
+        ]
+      });
+
+    //console.log(JSON.stringify(publicaciones, null, 2));
 
     const result = publicaciones.map(p => ({
       id: p.id_publicacion,
@@ -1136,6 +1139,7 @@ app.get('/publicaciones/:id', async (req, res) => {
     res.status(500).json({ error: 'Error al obtener publicaciones' });
   }
 });
+
 
 
 

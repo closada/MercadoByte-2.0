@@ -141,13 +141,13 @@ useEffect(() => {
 
   return (
     <div className="container">
-      {/* Alertas */}
       {!producto.activa && (
         <div className="alert alert-danger">Publicación Suspendida.</div>
       )}
-      {producto.activa && producto.stock === 0 && (
-        <div className="alert alert-danger">Publicación sin stock.</div>
-      )}
+      {producto.activa && producto.stock === 0 ? (
+          <div className="alert alert-danger">Publicación sin stock.</div>
+        ) : null}
+
 
       {/* Producto */}
       <div className="card row d-flex flex-row border-0">
@@ -185,6 +185,7 @@ useEffect(() => {
               Comprar ahora
             </button>
           </div>
+
         </div>
       </div>
 
