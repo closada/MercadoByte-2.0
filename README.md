@@ -1,16 +1,16 @@
-# 🛒 MercadoByte
+# MercadoByte
 
 Marketplace de productos de tecnología con autenticación, compras, y gestión para usuarios y administradores.
 
 ---
 
-## 📌 Descripción
+## Descripción
 
 MercadoByte es una aplicación web. Permite a los usuarios registrarse, comprar productos tecnológicos, hacer preguntas, dejar opiniones y gestionar sus compras. Los administradores pueden administrar productos, categorías, ventas y publicaciones.
 
 ---
 
-## 🛠️ Tecnologías utilizadas
+## Tecnologías utilizadas
 
 ### Frontend (React)
 
@@ -31,7 +31,7 @@ MercadoByte es una aplicación web. Permite a los usuarios registrarse, comprar 
 
 ---
 
-## 📂 Estructura del proyecto
+## Estructura del proyecto
 
 ```
 mercadobyte/
@@ -43,7 +43,7 @@ mercadobyte/
 
 ---
 
-## 🚀 Cómo ejecutar el proyecto
+## Cómo ejecutar el proyecto
 
 ### 1. Clonar el repositorio
 
@@ -54,14 +54,14 @@ cd mercadobyte
 
 ### 2. Instalar dependencias
 
-#### 🔧 Backend
+#### Backend
 
 ```bash
 cd api
 npm install
 ```
 
-#### 💻 Frontend
+#### Frontend
 
 ```bash
 cd ../src
@@ -70,7 +70,7 @@ npm install
 
 ### 3. Ejecutar el proyecto
 
-#### 🔙 Iniciar Backend
+#### Iniciar Backend
 
 ```bash
 cd api
@@ -79,7 +79,7 @@ nodemon api.js
 
 El backend corre en: `http://localhost:3000`
 
-#### ▶️ Iniciar Frontend
+#### Iniciar Frontend
 
 ```bash
 cd ../src
@@ -90,7 +90,7 @@ El frontend corre en: `http://localhost:5173` (o el puerto que indique Vite)
 
 ---
 
-## 🧪 Base de Datos
+## Base de Datos
 
 Este proyecto utiliza **SQLite**, y la base de datos está preconfigurada con el archivo:
 
@@ -102,7 +102,7 @@ api/mercadobyte.db
 
 ---
 
-## 🧑‍💻 Autora
+## Autora
 
 Desarrollado por **Camila Losada**  
 Proyecto Final – Programación Web 2 – UCES – 2025
@@ -120,7 +120,7 @@ Proyecto Final – Programación Web 2 – UCES – 2025
 
 ---
 
-## 🖼️ Capturas de pantalla
+## Capturas de pantalla
 
 ### Vista de inicio
 
